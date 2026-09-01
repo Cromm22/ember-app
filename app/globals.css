@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+:root {
+  --dusk: #100814;
+  --plum: #1a0f1e;
+  --cream: #f5f1e8;
+  --orange: #ff6b35;
+  --orange-light: #ff8c5a;
+}
+
+@theme inline {
+  --color-dusk: var(--dusk);
+  --color-plum: var(--plum);
+  --color-cream: var(--cream);
+  --color-orange: var(--orange);
+  --color-orange-light: var(--orange-light);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--dusk);
+  color: var(--cream);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
