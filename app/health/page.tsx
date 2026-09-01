@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import FlameAvatar from '@/components/FlameAvatar';
 import BottomNav from '@/components/BottomNav';
 import { getUserData, getTodayEntries, syncWatchWorkouts } from '@/lib/storage';
 import { decodeWatchPayload, watchRowsFromPayload } from '@/lib/watchSync';
 
-export default function HealthPage() {
+function HealthContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [userData, setUserData] = useState<any>(null);
@@ -151,5 +151,17 @@ export default function HealthPage() {
 
       <BottomNav />
     </div>
+  );
+}
+
+export default function HealthPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex-1 flex items-center justify-center bg-dusk min-h-screen">
+        <div className="text-cream">Loading...</div>
+      </div>
+    }>
+      <HealthContent />
+    </Suspense>
   );
 }

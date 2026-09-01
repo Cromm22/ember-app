@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import BottomNav from '@/components/BottomNav';
 import { getTodayEntries, addWorkoutEntry } from '@/lib/storage';
@@ -14,7 +14,7 @@ const QUICK_WORKOUTS = [
   { name: 'Outdoor cycle', icon: '🚴', defaultCalories: 220 },
 ];
 
-export default function WorkoutPage() {
+function WorkoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [todayData, setTodayData] = useState<any>(null);
@@ -155,5 +155,17 @@ export default function WorkoutPage() {
 
       <BottomNav />
     </div>
+  );
+}
+
+export default function WorkoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex-1 flex items-center justify-center bg-dusk min-h-screen">
+        <div className="text-cream">Loading...</div>
+      </div>
+    }>
+      <WorkoutContent />
+    </Suspense>
   );
 }
