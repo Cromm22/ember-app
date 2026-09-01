@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import BottomNav from '@/components/BottomNav';
 import { getTodayEntries, addWorkoutEntry } from '@/lib/storage';
 
@@ -14,12 +15,21 @@ const QUICK_WORKOUTS = [
 ];
 
 export default function WorkoutPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [todayData, setTodayData] = useState<any>(null);
   const [showAddWorkout, setShowAddWorkout] = useState(false);
   const [selectedWorkout, setSelectedWorkout] = useState<any>(null);
   const [calories, setCalories] = useState(0);
 
   useEffect(() => {
+    // Redirect to /health if watch parameter is present
+    const watchParam = searchParams.get('watch');
+    if (watchParam) {
+      router.replace(`/health?watch=${watchParam}`);
+      return;
+    }
+    
     loadData();
   }, []);
 

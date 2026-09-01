@@ -94,3 +94,23 @@ export function getTodayEntries() {
 export function resetDailyData() {
   saveUserData({ waterLog: 0 });
 }
+
+export function syncWatchWorkouts(watchEntries: WorkoutEntry[], day: string) {
+  const data = getUserData();
+  const dayStart = new Date(day).setHours(0, 0, 0, 0);
+  const dayEnd = new Date(day).setHours(23, 59, 59, 999);
+  
+  // Remove existing watch-* exercises for the same day, keep manual ones
+  const filteredWorkouts = data.workoutLog.filter(entry => {
+    const isWatchEntry = entry.id.startsWith('watch-');
+    const isSameDay = entry.timestamp >= dayStart && entry.timestamp <= dayEnd;
+    
+    // Keep if: not a watch entry OR not the same day
+    return !isWatchEntry || !isSameDay;
+  });
+  
+  // Add new watch workouts
+  const updatedWorkouts = [...filteredWorkouts, ...watchEntries];
+  
+  saveUserData({ workoutLog: updatedWorkouts });
+}
